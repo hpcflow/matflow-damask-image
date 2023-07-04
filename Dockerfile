@@ -4,7 +4,7 @@ SHELL ["/bin/bash", "-c"]
 
 RUN <<SysReq
     apt-get update
-    apt-get install -y curl
+    apt-get install -y curl libgl1-mesa-glx libxrender1
 SysReq
 
 RUN <<matflow
@@ -22,6 +22,7 @@ RUN <<install_micromamba
     ./bin/micromamba shell init -s bash -p /micromamba
 install_micromamba
 ENV MAMBA_ROOT_PREFIX=/micromamba
+
 COPY envs.yaml /root/.matflow-new/envs.yaml
 RUN <<activate_micromamba
     micromamba create -n matflow_damask_parse_env python -y -c conda-forge
