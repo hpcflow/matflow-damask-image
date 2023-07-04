@@ -31,6 +31,7 @@ RUN <<activate_micromamba
     pip install matflow-new damask-parse
     matflow config append environment_sources envs.yaml
 activate_micromamba
+RUN echo "micromamba activate matflow_damask_parse_env" >> ~/.bashrc
 
 WORKDIR /wd/
 ENTRYPOINT ["micromamba", "run", "-n", "matflow_damask_parse_env"]
