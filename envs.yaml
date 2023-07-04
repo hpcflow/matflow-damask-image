@@ -1,5 +1,6 @@
 - name: damask_parse_env
   setup: |
+    micromamba shell init
     micromamba activate matflow_damask_parse_env
   executables:
     - label: python
