@@ -31,5 +31,6 @@ RUN <<activate_micromamba
     matflow config append environment_sources envs.yaml
 activate_micromamba
 
-CMD [ "bash" ]
-ENTRYPOINT [ "" ]
+WORKDIR /wd/
+ENTRYPOINT ["micromamba", "run", "-n", "matflow_damask_parse_env"]
+CMD [ "" ]
