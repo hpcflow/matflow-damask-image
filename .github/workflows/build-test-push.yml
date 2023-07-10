@@ -3,8 +3,13 @@ name: build-test-push
 on:
   workflow_dispatch:
     inputs:
+      versioned:
+        description: 'Push with versioned tag?'
+        required: true
+        type: boolean
+        default: true
       latest:
-        description: "Also tag as latest?"
+        description: 'Push with "latest" tag?'
         required: true
         type: boolean
         default: true
@@ -45,6 +50,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push versioned
+        if: ${{ github.event.inputs.versioned }}
         run: |
           docker image tag matflow-damask:testing ghcr.io/hpcflow/matflow-damask:${{ steps.tag.outputs.versions }}
           docker push ghcr.io/hpcflow/matflow-damask:${{ steps.tag.outputs.versions }}
