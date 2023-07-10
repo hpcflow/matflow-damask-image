@@ -22,7 +22,11 @@ This should place you in `/wd` inside the container, where you can now run `matf
 
 ## Build
 
-Because matflow is installed using the single liner, with no reference to the version, it installs the latest version, but docker does not detect the version change, so new images need to be built with the `--no-cahce` option:
+The easiest way to build and deploy the image is through the [build-test-push](https://github.com/hpcflow/matflow-damask-image/actions/workflows/build-test-push.yml) action, which can be manually triggered.
+
+### Building locally
+
+Because matflow is installed using the single liner, with no reference to the version, it installs the latest version, but docker does not detect the version change, so new images need to be built with the `--no-cache` option:
 ```
 docker build --no-cache -t ghcr.io/hpcflow/matflow-damask:latest .
 ```
