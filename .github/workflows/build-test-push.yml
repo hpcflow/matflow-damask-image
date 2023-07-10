@@ -1,8 +1,5 @@
 name: Docker image build
 
-permissions:
-    packages: write
-
 on:
   workflow_dispatch:
     inputs:
