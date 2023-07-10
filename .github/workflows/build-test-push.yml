@@ -1,5 +1,8 @@
 name: Docker image build
 
+permissions:
+    packages: write
+
 on:
   workflow_dispatch:
     inputs:
@@ -37,6 +40,13 @@ jobs:
           matflow=$(echo $(docker run matflow-damask:testing matflow --version) | cut -d' ' -f 3)
           echo "versions=d${damask}_m${matflow}" >> $GITHUB_OUTPUT
   
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Push versioned
         run: |
           docker image tag matflow-damask:testing ghcr.io/hpcflow/matflow-damask:${{ steps.tag.outputs.versions }}
