@@ -33,7 +33,7 @@ jobs:
       - name: Create tag from damask and matflow versions
         id: tag
         run: |
-          damask=$(sed 's|alpha|a|' <<<"$(grep "FROM" Dockerfile | cut -d':' -f 2)")
+          damask=$(sed 's|-alpha|a|' <<<"$(grep "FROM" Dockerfile | cut -d':' -f 2)")
           matflow=$(echo $(docker run matflow-damask:testing matflow --version) | cut -d' ' -f 3)
           echo "versions=d${damask}_m${matflow}" >> $GITHUB_OUTPUT
   
