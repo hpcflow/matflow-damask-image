@@ -34,7 +34,24 @@ jobs:
           tags: matflow-damask:testing
         
       - name: Test
-        run: docker run -v $PWD/wd:/wd matflow-damask:testing matflow go simple_damask.yaml
+        run: |
+          expected="Submitted 1 jobscript."
+          actual=$(docker run -v $PWD/wd:/wd matflow-damask:testing matflow go simple_damask.yaml)
+          if [ "$expected" = "$actual" ]; then echo "Passed -   $actual"; else  echo "ERROR - Expected: $expected" && echo " But was: $actual" && status=1; fi
+
+          expected="2"
+          actual=$(grep -rnie "DAMASK terminated on:" . | wc -l)
+          if [ "$expected" = "$actual" ]; then echo "Passed -   $actual"; else  echo "ERROR - Expected: $expected" && echo " But was: $actual" && status=1; fi
+
+          expected="336"
+          actual=$(ls -R . | wc -l)
+          if [ "$expected" = "$actual" ]; then echo "Passed -   $actual"; else  echo "ERROR - Expected: $expected" && echo " But was: $actual" && status=1; fi
+
+          expected="Existing wd directory."
+          actual=$(find . -name wd)
+          if [ "$actual" ]; then echo "Passed -   $actual"; else  echo "ERROR - Expected: $expected" && echo " But was: $actual" && status=1; fi
+
+          exit $status
         
       - name: Create tag from damask and matflow versions
         id: tag
