@@ -36,7 +36,7 @@ jobs:
       - name: Test
         run: |
           expected="Submitted 1 jobscript."
-          actual=$(docker run -v $PWD/wd:/wd matflow-damask:testing matflow go simple_damask.yaml)
+          actual=$(docker run -v $PWD/wd:/wd matflow-damask:testing matflow go simple_damask.yaml --wait)
           if [ "$expected" = "$actual" ]; then
             echo "Passed -   $actual"
           else
