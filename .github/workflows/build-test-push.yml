@@ -34,7 +34,22 @@ jobs:
           tags: matflow-damask:testing
         
       - name: Test
-        run: docker run -v $PWD/wd:/wd matflow-damask:testing matflow go simple_damask.yaml
+        run: |
+          expected=\
+          "Submitted 1 jobscript.
+          Waiting for workflow submissions to finish...
+          Jobscript 0 from submission 0 finished with exit code 0.
+          Specified submissions have finished."
+          actual=$(docker run -v $PWD/wd:/wd matflow-damask:testing matflow go simple_damask.yaml --wait)
+          if [ "$expected" = "$actual" ]; then
+            echo "Passed -   $actual"
+          else
+            echo "ERROR - Expected: $expected"
+            echo "          Actual: $actual"
+            status=1
+          fi
+
+          exit $status
         
       - name: Create tag from damask and matflow versions
         id: tag

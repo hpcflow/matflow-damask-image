@@ -6,17 +6,19 @@ This repository hosts the dockerfile to create a container image that contains D
 
 If you have a workflow `./wd/simple_damask.yaml`, run the container with
 ```
-docker run -v $PWD/wd:/wd ghcr.io/hpcflow/matflow-damask:latest matflow go simple_damask.yaml
+docker run --rm -v $PWD/wd:/wd ghcr.io/hpcflow/matflow-damask:latest matflow go simple_damask.yaml --wait
 ```
-This will mount the `./wd` directory in the container, so that `simple_damask.yaml` is accessible, and run the command `matflow go simple_damask.yaml`, which will generate outputs in the same directory (`./wd`).
+This will mount the `./wd` directory in the container, so that `simple_damask.yaml` is accessible, and run the command `matflow go simple_damask.yaml --wait`, which will generate outputs in the same directory (`./wd`).
+The `--wait` flag is important, if it is not used the container will terminate before the workflow finishes.
 
 ### Interactive
 
 If you want to run an interactive container use
 ```
-docker run -it -v $PWD/wd:/wd ghcr.io/hpcflow/matflow-damask:latest bash
+docker run --rm -it -v $PWD/wd:/wd ghcr.io/hpcflow/matflow-damask:latest bash
 ```
 This should place you in `/wd` inside the container, where you can now run `matflow go simple_damask.yaml`.
+In this case, the `--wait` flag is not essential, as the container will stay alive until you exit.
 
 **WARNING**: any files that you modify in `/wd` will also be modified in the host system (`./wd`).
 
