@@ -1,0 +1,16 @@
+Bootstrap: docker
+From: ghcr.io/hpcflow/matflow-damask:latest
+
+%post
+    mkdir -p /wd
+    mkdir -p /run/user/
+    MY_ENV=matflow_damask_parse_env
+    PATH=/micromamba/envs/$MY_ENV/bin:/micromamba/condabin:$PATH
+    echo "PATH=$PATH" >> $SINGULARITY_ENVIRONMENT
+    echo "PS1='($MY_ENV) \W$ '" >> $SINGULARITY_ENVIRONMENT
+    matflow manage reset-config
+    matflow config append environment_sources /root/.matflow-new/envs.yaml
+
+%runscript
+    cd /wd
+    eval "$@"
